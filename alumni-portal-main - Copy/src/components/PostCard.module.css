@@ -1,0 +1,144 @@
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-small);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-premium); border-color: rgba(123, 97, 255, 0.3); }
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+
+.authorSection { display: flex; gap: 1rem; align-items: center; }
+
+.avatar { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; border: 2px solid var(--card-border); }
+
+.authorInfo { display: flex; flex-direction: column; }
+
+.nameRow { display: flex; gap: 0.5rem; align-items: center; }
+.name { font-weight: 800; color: var(--text-primary); font-size: 1rem; }
+.roleBadge { font-size: 0.65rem; background: var(--primary-color); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; }
+
+.meta { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; opacity: 0.8; }
+
+.deleteBtn { 
+  background: transparent; 
+  border: none; 
+  color: var(--text-secondary); 
+  font-size: 1.5rem; 
+  line-height: 1; 
+  cursor: pointer; 
+  padding: 0 0.5rem; 
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+.deleteBtn:hover { opacity: 1; color: #ef4444; }
+
+.content { margin-bottom: 1.5rem; }
+.content p { font-size: 1.05rem; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; margin-bottom: 1.5rem; }
+
+.mediaContainer { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--card-border); background: var(--bg-color); }
+.postMedia { width: 100%; max-height: 500px; object-fit: contain; }
+
+.footer { border-top: 1px solid var(--card-border); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center; }
+
+.institutionalSeal { font-size: 0.7rem; font-weight: 900; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; }
+
+.messageLink { 
+  font-size: 0.8rem; 
+  font-weight: 700; 
+  color: var(--primary-color); 
+  text-decoration: none; 
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background: var(--accent-glow);
+  transition: all 0.2s;
+}
+.messageLink:hover { background: var(--primary-color); color: white; }
+
+.editedBadge { 
+  font-size: 0.62rem; 
+  background: rgba(34, 197, 94, 0.1); 
+  color: #22c55e; 
+  padding: 0.2rem 0.5rem; 
+  border-radius: 6px; 
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.actionRow { display: flex; gap: 0.5rem; align-items: center; }
+
+.editBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  padding: 0.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.editBtn:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+.editWrapper { width: 100%; display: flex; flex-direction: column; gap: 1rem; }
+.editArea {
+  width: 100%;
+  min-height: 120px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  outline: none;
+  resize: vertical;
+}
+.editArea:focus { border-color: var(--primary-color); }
+
+.editActions { display: flex; gap: 0.75rem; }
+.saveBtn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.cancelBtn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--card-border);
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.appealBtn {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+}
+.appealBtn:hover { background: #f59e0b; color: white; }

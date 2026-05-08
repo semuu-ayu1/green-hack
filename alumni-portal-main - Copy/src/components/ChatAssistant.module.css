@@ -1,0 +1,61 @@
+.chatContainer {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999; /* Keeps it above everything else */
+  font-family: sans-serif;
+}
+
+.fab {
+  background: #7B61FF; /* Matches your site's purple theme */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+}
+
+.chatWindow {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 300px;
+  height: 400px;
+  background: #1a1a1a; /* Matches your dark theme */
+  border: 1px solid #333;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+
+.chatContainer { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+.fab { 
+  background: #7B61FF; color: white; border: none; border-radius: 50%; 
+  width: 55px; height: 55px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.chatWindow { 
+  position: absolute; bottom: 70px; right: 0; width: 320px; height: 500px; 
+  background: #121212; border: 1px solid #333; border-radius: 12px; 
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.chatHeader { background: #1f1f1f; padding: 15px; border-bottom: 1px solid #333; }
+.chatBody { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.botMsg { background: #333; color: white; padding: 8px 12px; border-radius: 12px 12px 12px 0; align-self: flex-start; max-width: 80%; font-size: 0.9rem; }
+.userMsg { background: #7B61FF; color: white; padding: 8px 12px; border-radius: 12px 12px 0 12px; align-self: flex-end; max-width: 80%; font-size: 0.9rem; }
+.suggestionTitle { font-size: 0.75rem; color: #888; padding: 5px 15px; background: #1a1a1a; }
+.suggestions { background: #1a1a1a; padding: 10px; display: flex; flex-direction: column; gap: 5px; max-height: 150px; overflow-y: auto; border-top: 1px solid #333; }
+.qBtn { background: transparent; border: 1px solid #444; color: #ccc; padding: 6px; border-radius: 4px; text-align: left; cursor: pointer; font-size: 0.8rem; }
+.qBtn:hover { background: #7B61FF; color: white; border-color: #7B61FF; }
