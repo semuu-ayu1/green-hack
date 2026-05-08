@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String        @id @default(cuid())
+  email            String        @unique
+  password         String
+  role             String        @default("STUDENT")
+  status           String        @default("PENDING")
+  name             String
+  bio              String?
+  imageUrl         String?
+  location         String?
+  phone            String?
+  website          String?
+  branch           String?
+  startYear        Int?
+  gradYear         Int?
+  rollNumber       String?
+  hostel           String?
+  higherStudies    String?
+  company          String?
+  jobRole          String?
+  skills           String?
+  achievements     String?
+  linkedinUrl      String?
+  githubUrl        String?
+  twitterUrl       String?
+  instagramUrl     String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  authoredEvents   Event[]
+  authoredJobs     Job[]
+  jobInterests     JobInterest[]
+  receivedMessages Message[]     @relation("ReceivedMessages")
+  sentMessages     Message[]     @relation("SentMessages")
+  posts            Post[]
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  content   String
+  imageUrl  String?
+  authorId  String
+  roleSnap  String
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  content    String
+  imageUrl   String?
+  senderId   String
+  receiverId String
+  read       Boolean  @default(false)
+  deletedFor String   @default("")
+  createdAt  DateTime @default(now())
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model Job {
+  id          String        @id @default(cuid())
+  title       String
+  company     String
+  description String
+  link        String?
+  authorId    String
+  status      String        @default("PENDING")
+  createdAt   DateTime      @default(now())
+  author      User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  interests   JobInterest[]
+}
+
+model JobInterest {
+  id        String   @id @default(cuid())
+  userId    String
+  jobId     String
+  createdAt DateTime @default(now())
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  date        DateTime
+  description String
+  authorId    String
+  createdAt   DateTime @default(now())
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model VerifiedEmail {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  authCode  String?  @unique
+  startYear Int?
+  gradYear  Int?
+  createdAt DateTime @default(now())
+}
