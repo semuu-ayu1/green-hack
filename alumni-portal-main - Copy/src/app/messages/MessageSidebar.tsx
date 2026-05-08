@@ -1,0 +1,218 @@
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { Search, Lock, GraduationCap, Users, Shield } from 'lucide-react';
+
+interface User {
+  id: string;
+  name: string;
+  imageUrl?: string | null;
+  role: string;
+  lastMessage?: string;
+  lastMessageAt?: Date;
+  unread?: boolean;
+}
+
+export default function MessageSidebar({ users, activeUserId }: { users: User[], activeUserId?: string }) {
+  const [search, setSearch] = useState('');
+  const [tab, setTab] = useState<'ALUMNI' | 'STUDENT' | 'STAFF'>('ALUMNI');
+  const [mode, setMode] = useState<'RECENTS' | 'COMMUNITY'>('RECENTS');
+
+  const recentContacts = users.filter(u => u.lastMessageAt && u.lastMessageAt.getTime() > 0);
+  
+  const filteredRecents = recentContacts.filter(u => 
+    u.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredCommunity = users.filter(u =>
+    u.role === tab &&
+    u.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const displayUsers = mode === 'RECENTS' ? filteredRecents : filteredCommunity;
+
+  const alumniCount = users.filter(u => u.role === 'ALUMNI').length;
+  const studentCount = users.filter(u => u.role === 'STUDENT').length;
+  const staffCount = users.filter(u => u.role === 'STAFF').length;
+
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column', overflow: 'hidden',
+      background: 'var(--bg-color)', borderRight: '1px solid var(--card-border)',
+    }}>
+      {/* Sidebar Header */}
+      <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--card-border)', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+          <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+            <Lock size={10} /> Secured Network
+          </div>
+          <div style={{ display: 'flex', background: 'var(--bg-elevated)', padding: '2px', borderRadius: '8px', border: '1px solid var(--card-border)' }}>
+             <button 
+               onClick={() => setMode('RECENTS')}
+               style={{ 
+                 padding: '0.3rem 0.6rem', fontSize: '0.65rem', borderRadius: '6px', border: 'none', cursor: 'pointer',
+                 background: mode === 'RECENTS' ? 'var(--primary-color)' : 'transparent',
+                 color: mode === 'RECENTS' ? 'white' : 'var(--text-secondary)',
+                 fontWeight: 700, transition: '0.2s'
+               }}
+             >Recents</button>
+             <button 
+               onClick={() => setMode('COMMUNITY')}
+               style={{ 
+                 padding: '0.3rem 0.6rem', fontSize: '0.65rem', borderRadius: '6px', border: 'none', cursor: 'pointer',
+                 background: mode === 'COMMUNITY' ? 'var(--primary-color)' : 'transparent',
+                 color: mode === 'COMMUNITY' ? 'white' : 'var(--text-secondary)',
+                 fontWeight: 700, transition: '0.2s'
+               }}
+             >Directory</button>
+          </div>
+        </div>
+
+        {mode === 'COMMUNITY' ? (
+          <div style={{ display: 'flex', gap: '0.3rem', marginBottom: '0.75rem' }}>
+            <button
+              onClick={() => setTab('ALUMNI')}
+              style={{
+                flex: 1, padding: '0.5rem 0.15rem', borderRadius: '8px',
+                border: tab === 'ALUMNI' ? '1px solid var(--primary-color)' : '1px solid var(--card-border)',
+                background: tab === 'ALUMNI' ? 'rgba(123,97,255,0.15)' : 'transparent',
+                color: tab === 'ALUMNI' ? 'var(--primary-color)' : 'var(--text-secondary)',
+                fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.1rem',
+                transition: 'all 0.15s',
+              }}
+            >
+              <Users size={12} /> <span>Alumni</span>
+              <span style={{
+                background: tab === 'ALUMNI' ? 'var(--primary-color)' : 'var(--card-border)',
+                color: 'white', borderRadius: '10px', padding: '0 0.4rem', fontSize: '0.6rem'
+              }}>{alumniCount}</span>
+            </button>
+            
+            <button
+              onClick={() => setTab('STAFF')}
+              style={{
+                flex: 1, padding: '0.5rem 0.15rem', borderRadius: '8px',
+                border: tab === 'STAFF' ? '1px solid #f59e0b' : '1px solid var(--card-border)',
+                background: tab === 'STAFF' ? 'rgba(245,158,11,0.12)' : 'transparent',
+                color: tab === 'STAFF' ? '#f59e0b' : 'var(--text-secondary)',
+                fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.1rem',
+                transition: 'all 0.15s',
+              }}
+            >
+              <Shield size={12} /> <span>Staff</span>
+              <span style={{
+                background: tab === 'STAFF' ? '#f59e0b' : 'var(--card-border)',
+                color: 'white', borderRadius: '10px', padding: '0 0.4rem', fontSize: '0.6rem'
+              }}>{staffCount}</span>
+            </button>
+
+            <button
+              onClick={() => setTab('STUDENT')}
+              style={{
+                flex: 1, padding: '0.5rem 0.15rem', borderRadius: '8px',
+                border: tab === 'STUDENT' ? '1px solid #22c55e' : '1px solid var(--card-border)',
+                background: tab === 'STUDENT' ? 'rgba(34,197,94,0.12)' : 'transparent',
+                color: tab === 'STUDENT' ? '#22c55e' : 'var(--text-secondary)',
+                fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.1rem',
+                transition: 'all 0.15s',
+              }}
+            >
+              <GraduationCap size={12} /> <span>Student</span>
+              <span style={{
+                background: tab === 'STUDENT' ? '#22c55e' : 'var(--card-border)',
+                color: 'white', borderRadius: '10px', padding: '0 0.4rem', fontSize: '0.6rem'
+              }}>{studentCount}</span>
+            </button>
+          </div>
+        ) : (
+          <div style={{ height: '0.5rem' }}></div>
+        )}
+
+        {/* Search */}
+        <div style={{ position: 'relative', marginBottom: mode === 'RECENTS' ? '0.5rem' : '0' }}>
+          <Search size={13} style={{ position: 'absolute', left: '0.7rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder={mode === 'RECENTS' ? "Search conversations..." : `Search ${tab.toLowerCase()}...`}
+            style={{
+              width: '100%', padding: '0.6rem 0.75rem 0.6rem 2rem',
+              background: 'var(--bg-elevated)', border: '1px solid var(--card-border)',
+              borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.82rem',
+              fontWeight: 500, outline: 'none',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Contacts List */}
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+        {displayUsers.length === 0 && (
+          <p style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.82rem' }}>
+            No {mode === 'RECENTS' ? 'recent conversations' : (tab === 'ALUMNI' ? 'alumni' : tab === 'STAFF' ? 'staff' : 'students')} found.
+          </p>
+        )}
+        {displayUsers.map(u => {
+          const isActive = activeUserId === u.id;
+          const avatarBg = u.role === 'ALUMNI' ? '7B61FF' : u.role === 'STAFF' ? 'f59e0b' : '22c55e';
+          const avatarUrl = u.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=${avatarBg}&color=fff&bold=true`;
+          
+          let tabColor = '#22c55e';
+          let tabBg = 'rgba(34,197,94,0.08)';
+          if (u.role === 'ALUMNI') { tabColor = '#7B61FF'; tabBg = 'rgba(123,97,255,0.12)'; }
+          else if (u.role === 'STAFF') { tabColor = '#f59e0b'; tabBg = 'rgba(245,158,11,0.08)'; }
+
+          return (
+            <Link
+              key={u.id}
+              href={`/messages?to=${u.id}`}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.85rem',
+                padding: '0.9rem 1.25rem', textDecoration: 'none',
+                borderBottom: '1px solid var(--card-border)',
+                background: isActive ? tabBg : 'transparent',
+                borderLeft: isActive ? `3px solid ${tabColor}` : '3px solid transparent',
+                transition: 'background 0.15s',
+              }}
+            >
+              <div style={{ position: 'relative', flexShrink: 0 }}>
+                <img src={avatarUrl} alt={u.name} style={{ width: 42, height: 42, borderRadius: '10px', objectFit: 'cover' }} />
+                {u.unread && (
+                  <span style={{
+                    position: 'absolute', top: -3, right: -3, width: 10, height: 10,
+                    background: '#22c55e', borderRadius: '50%', border: '2px solid var(--bg-color)',
+                  }} />
+                )}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.15rem' }}>
+                  <span style={{ fontWeight: u.unread ? 700 : 600, fontSize: '0.88rem', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {u.name}
+                  </span>
+                  {u.lastMessageAt && u.lastMessageAt.getTime() > 0 && (
+                    <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', fontWeight: 500, flexShrink: 0, marginLeft: '0.5rem' }}>
+                      {new Date(u.lastMessageAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                    </span>
+                  )}
+                </div>
+                {u.lastMessage ? (
+                  <p style={{ fontSize: '0.78rem', color: u.unread ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: u.unread ? 700 : 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: 0 }}>
+                    {u.lastMessage.length > 32 ? u.lastMessage.substring(0, 32) + '…' : u.lastMessage}
+                  </p>
+                ) : (
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', opacity: 0.5, margin: 0, fontStyle: 'italic' }}>
+                    {u.role === 'ALUMNI' ? 'Alumni' : u.role === 'STAFF' ? 'Staff' : 'Student'} · say hello!
+                  </p>
+                )}
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
